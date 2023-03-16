@@ -1,14 +1,18 @@
-from django.forms import forms, ModelForm, CharField, TextInput, Textarea, BooleanField, CheckboxInput
+from django import forms
+from product import models
 
-from product.models import Variant
-
-
-class VariantForm(ModelForm):
-    class Meta:
-        model = Variant
-        fields = '__all__'
-        widgets = {
-            'title': TextInput(attrs={'class': 'form-control'}),
-            'description': Textarea(attrs={'class': 'form-control'}),
-            'active': CheckboxInput(attrs={'class': 'form-check-input', 'id': 'active'})
-        }
+class productForm(forms.ModelForm):
+    class Meta(object):
+        model = models.Product
+        fields = ['sku', 'description', 'title']
+        
+class ProductImageForm(forms.ModelForm):
+    class Meta(object):
+        model = models.ProductImage
+        fields = ['file_path']
+        
+class ProductVariantPriceForm(forms.ModelForm):
+    class Meta(object):
+        model = models.ProductVariantPrice
+        fields = ['product_variant_one','product_variant_two','product_variant_three','price','stock']
+        

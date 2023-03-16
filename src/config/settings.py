@@ -38,14 +38,15 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'authentication',
-    'product'
+    'product',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -89,7 +90,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mediusware_2023_django',
+        'NAME': 'final_mediusware',
         'USER': 'postgres',
         'PASSWORD': 'astagferullah',
         'HOST': 'localhost',

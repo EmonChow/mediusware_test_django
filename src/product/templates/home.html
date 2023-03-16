@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% block content %}
+<br><br>
+<div class="container">
+    <div class="row">
+        <h3 class="table-title text-primary "> <a href="/add" class="text-decoration-none">Add Products</a> </h3>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <form class="d-flex" method="get" action="/search">
+       
+            <div class="col-md-2 me-auto">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Product Title"
+              aria-label="Search"
+              name="inputTitle"
+            />
+        </div>
+        <div class="col-md-2 m-auto dropdown ">
+       
+              <select name="dropdown" class="custom-select btn btn-outline-secondary"
+			style="width:150px;">
+            {% for v in variant %}
+		    <option value="{{v}}">{{v}}</option>
+		  
+            {% endfor %}
+	</select>
+        </div>
+        <div class="col-md-3 m-auto">
+            <div class="row">
+                <div class="input-group">
+                    <div class="input-group-text" id="btnGroupAddon">Price Range</div>
+                    <input name="from" type="number" class="form-control" placeholder="From" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                    <input name="to" type="number" class="form-control" placeholder="To" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                  </div>
+            </div>
+        </div>
+        <div class="col-md-1 m-auto">date</div>
+            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-12 table-responsive border-primary">
+            <table class="table table-bordered table-striped text-center table-hover">
+                
+                <div class="row" style="text-align: left;">
+                        <div class="col-md-1"> <b>#</b></div>
+                        <div class="col-md-2"><b>Title</b> </div>
+                        <div class="col-md-4"> <b>Description</b> </div>
+                        <div class="col-md-4"> <b>variant</b> </div>
+                        <div class="col-md-1"> <b>Action</b> </div>
+                        <hr>
+                </div>
+
+                <div class="row" style="text-align: left;">
+                    {% for product in products %}
+                        <div class="col-md-1">{{forloop.counter}}</div>
+                        <div class="col-md-2">{{product.title}}</div>
+                        <div class="col-md-4">{{product.description}}</div>
+                        <!-- backward filter from parent to child  -->
+                        
+                        <div class="col-md-4">
+                            <div class="row">
+                                {% for p in product.productvariantprice_set.all %}
+                                <div class="col-md-4">{{p.product_variant_one.variant}}/{{p.product_variant_two.variant}}/{{p.product_variant_three.variant}}</div>
+                                <div class="col-md-4">Price: {{p.price}}</div>
+                                <div class="col-md-4">InStock: {{p.stock}}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-1"><a href="edit/{{product.id}}" class="btn btn-success">Edit</a></div>
+                        <hr>
+                        {% endfor %}
+                </div>
+                
+            </table>
+        </div>
+    </div>
+    <br> <br>
+</div>
+
+<!-- for paginators  -->
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        Showing {{products.start_index }} to {{products.end_index }} out of
+        {{product_num}}
+      </div>
+
+      <div class="col-md-6" style="display: flex; justify-content: end">
+          {% if products.has_other_pages %}
+          <div class="btn-group me-2" role="group" aria-label="First group">
+            {% if products.has_previous %}
+            <button type="button" class="btn btn-outline-primary"><a href="?page={{ products.previous_page_number }}">&laquo;</a></button>
+              
+            
+            {% else %}
+            <button type="button" class="btn btn-outline-primary disabled"><span>&laquo;</span></button>
+            {% endif %} 
+            {% for i in products.paginator.page_range %} 
+            {% if products.number == i %}
+            <button type="button" class="btn btn-outline-primary active">{{ i }}<span class="sr-only">(current)</span></button>
+            {% else %}
+            <button type="button" class="btn btn-outline-primary"><a href="?page={{ i }}" class="p-2">{{ i }}</a></button>
+            {% endif %} 
+            {% endfor %} 
+            {% if products.has_next %}
+            <button type="button" class="btn btn-outline-primary"><a href="?page={{ products.next_page_number }}">&raquo;</a></button>
+            {% else %}
+            <button type="button" class="btn btn-outline-primary disabled"><span>&raquo;</span></button>
+            {% endif %}
+        </div>
+          {% endif %}
+        </div>
+    </div>
+  </div>
+{% endblock %}
